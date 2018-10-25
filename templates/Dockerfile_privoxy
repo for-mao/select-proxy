@@ -1,0 +1,5 @@
+FROM alpine:latest
+
+LABEL maintainer="jiangrf@socialbird.cn"
+
+RUN apk add --update privoxy

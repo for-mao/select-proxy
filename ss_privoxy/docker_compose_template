@@ -1,0 +1,16 @@
+version: '2'
+services:
+    ss_privoxy_{{ port }}:
+      build:
+        context: ./
+        dockerfile: ./dockerfile_ss_privoxy
+      command: /bin/sh -c "sslocal -c /etc/shadowsocks.json -d start && privoxy --no-daemon /etc/privoxy/config"
+      container_name: dc-shadowsocks-{{ port }}
+      image: shadowsocks:alpine
+      ports:
+        - {{ port }}:8118
+      restart: always
+      tty: true
+      volumes:
+        - ./ss_config_{{ port }}.json:/etc/shadowsocks.json
+        - ./privoxy_config:/etc/privoxy/config

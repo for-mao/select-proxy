@@ -1,0 +1,5 @@
+pymongo
+jinja2
+requests
+future
+testinfra

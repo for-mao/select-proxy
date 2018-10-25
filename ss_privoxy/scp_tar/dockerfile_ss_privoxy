@@ -1,0 +1,18 @@
+# shadowsocks/README.md at master · shadowsocks/shadowsocks
+# https://github.com/shadowsocks/shadowsocks/blob/master/README.md
+
+FROM python:3-alpine
+
+LABEL maintainer="jiangrf@socialbird.cn"
+
+RUN apk add --update git
+
+# change pip source to douban
+RUN echo '[global]' >> /etc/pip.conf \
+ && echo 'index-url = https://pypi.douban.com/simple' >> /etc/pip.conf
+
+RUN pip install -U \
+    pip \
+    git+https://github.com/shadowsocks/shadowsocks.git@master
+
+RUN apk add --update privoxy

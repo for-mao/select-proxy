@@ -1,0 +1,10 @@
+2018-03-17 10:20:31 [select_proxy.vultr_apollo] INFO: =================test ip==================
+2018-03-17 10:20:31 [select_proxy.vultr_apollo] INFO: =================start delete all invalid ip================
+2018-03-17 10:20:31 [select_proxy.vultr_apollo] INFO: =================start fill ip=======================
+2018-03-17 10:23:47 [select_proxy.vultr_apollo] INFO: =================test ip==================
+2018-03-17 10:23:47 [select_proxy.vultr_apollo] INFO: =================start delete all invalid ip================
+2018-03-17 10:23:47 [select_proxy.vultr_apollo] INFO: =================start fill ip=======================
+2018-03-17 10:28:25 [select_proxy.vultr_apollo] INFO: =================config network======================
+2018-03-17 10:46:59 [select_proxy.vultr_apollo] INFO: ====================reboot=======================
+2018-03-17 11:22:25 [select_proxy.vultr_apollo] INFO: ===================create ansible task======================
+2018-03-17 11:22:25 [select_proxy.vultr_apollo] INFO: ================await================

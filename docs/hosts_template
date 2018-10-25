@@ -1,0 +1,10 @@
+[{{ task_name }}]
+{% for ip in ips %}{{ip}} ansible_host={{ip}} ansible_python_interpreter=/usr/bin/python3
+{% endfor %}{% for ip in cent_os_ips %}{{ip}} ansible_host={{ip}} ansible_python_interpreter=/usr/bin/python
+{% endfor %}
+
+[apollo_vultr_jiang:vars]
+ansible_port=33301
+
+[apollo_vultr_sun:vars]
+ansible_port=33301

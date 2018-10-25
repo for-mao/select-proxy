@@ -1,0 +1,5 @@
+[ssserver]
+{% for vps in vps_purchased %}{{ vps.SUBID }} ansible_host={{ vps.main_ip }} wnsible_port=22 ansible_python_interpreter=/usr/bin/python3
+{% endfor %}
+[sslocal]
+ubuntuserver ansible_host=10.255.0.0 ansible_port=22 ansible_python_interpreter=/usr/bin/python3

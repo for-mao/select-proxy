@@ -1,0 +1,5 @@
+HTTP_PROXY_LIST = [
+{% for vps in vps_purchased %}
+    '{{ vps }}'
+{% endfor %}
+]

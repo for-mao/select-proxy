@@ -1,0 +1,59 @@
+---
+- hosts: ssserver
+  tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+    - name: install git
+      apt:
+        name: git
+    - name: install pip
+      apt:
+        name: python3-pip
+    - name: install latest pip
+      pip:
+        editable: false
+        name: pip
+        extra_args: --upgrade
+    - name: install latest setuptools
+      pip:
+        editable: false
+        name: setuptools
+        extra_args: --upgrade
+    - name: install shadowsocks
+      pip:
+        editable: false
+        name: git+https://github.com/shadowsocks/shadowsocks.git@master
+    - name: copy ssserver.json to remote server
+      copy:
+        src: ./ssserver.json
+        dest: /root/
+    - name: run ssserver
+      command: ssserver -c /root/ssserver.json -d start
+
+- hosts: sslocal
+  tasks:
+    - name: copy docker-compose.yml to local server
+      copy:
+        src: ./docker-compose.yml
+        dest: /opt/ansible/shadowsocks-{{ timestamp }}/
+    - name: copy Dockerfile_ss to local server
+      copy:
+        src: ./Dockerfile_ss
+        dest: /opt/ansible/shadowsocks-{{ timestamp }}/
+    - name: copy Dockerfile_privoxy to local server
+      copy:
+        src: ./Dockerfile_privoxy
+        dest: /opt/ansible/shadowsocks-{{ timestamp }}/
+{% for vps in vps_purchased %}
+    - name: copy sslocal.json to local server
+      copy:
+        src: ./sslocal_{{ vps.SUBID }}.json
+        dest: /opt/ansible/shadowsocks-{{ timestamp }}/
+    - name: copy privoxy config to local server
+      copy:
+        src: ./privoxy_{{ vps.SUBID }}
+        dest: /opt/ansible/shadowsocks-{{ timestamp }}/
+{% endfor %}
+#     - name: run sslocal in docker-compose
+#       command: docker-compose up -f /opt/ansible/shadowsocks/docker-compose.yml -d

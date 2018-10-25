@@ -1,0 +1,63 @@
+---
+- hosts: droplets
+  tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+    - name: apt upgrade
+      apt:
+        upgrade: dist
+    - name: install git
+      apt:
+        name: git
+    - name: install vim
+      apt:
+        name: vim
+    - name: install tmux
+      apt:
+        name: tmux
+    - name: install pip
+      apt:
+        name: python3-pip
+    - name: install latest pip
+      pip:
+        editable: false
+        name: pip
+        extra_args: --upgrade
+    - name: install latest setuptools
+      pip:
+        editable: false
+        name: setuptools
+        extra_args: --upgrade
+
+    - name: git clone blade-vim
+      git:
+        repo: https://github.com/grammy-jiang/blade-vim.git
+        dest: ~/projects/blade-vim
+        clone: yes
+    - name: vundle
+      git:
+        repo: https://github.com/VundleVim/Vundle.vim.git
+        dest: ~/.vim/bundle/Vundle.vim
+        clone: yes
+    - name: create symbolic link
+      file:
+        src: ~/projects/blade-vim/vimrc
+        dest: ~/.vimrc
+        state: link
+
+    - name: git clone blade-tmux
+      git:
+        repo: https://github.com/grammy-jiang/blade-tmux.git
+        dest: ~/projects/blade-tmux
+        clone: yes
+    - name: tmux plugin manager
+      git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: ~/.tmux/plugins/tpm
+        clone: yes
+    - name: create symbolic link
+      file:
+        src: ~/projects/blade-tmux/tmux.conf
+        dest: ~/.tmux.conf
+        state: link

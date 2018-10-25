@@ -1,0 +1,16 @@
+version: '2'
+services:
+    shadowsocks-test:
+      build:
+        context: ./
+        dockerfile: ./Dockerfile_ss
+      command: /bin/sh -c "sslocal -c /etc/shadowsocks.json -d start && privoxy --no-daemon /etc/privoxy/config"
+      container_name: dc-shadowsocks-test
+      image: shadowsocks:alpine
+      ports:
+        - 12345:8118
+      restart: always
+      tty: true
+      volumes:
+        - ./ss_config_test.json:/etc/shadowsocks.json
+        - ./privoxy_config_test:/etc/privoxy/config

@@ -1,0 +1,5 @@
+pymongo
+testinfra
+jinja2
+docker-compose
+future

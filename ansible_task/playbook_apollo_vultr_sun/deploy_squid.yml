@@ -1,0 +1,48 @@
+---
+- name: Squid Installation
+  hosts: apollo_vultr_sun
+
+  tasks:
+    - name: Install squid package on Ubuntu
+      apt:
+        name: squid
+        update_cache: yes
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Install squid package on CentOS
+      yum:
+        name: squid
+      when: ansible_distribution == 'CentOS'
+
+    - name: upload squid.conf
+      template:
+        src: squid.conf
+        dest: /etc/squid/squid.conf
+        mode: 0644
+#      notify: restart squid
+
+    - name: copy file to remote host
+      copy:
+        src: docs/passwd
+        dest: /etc/squid/passwd
+#      notify: restart squid
+
+    - name: restart squid
+      service:
+        name: squid
+        state: restarted
+
+    - name: config firewall on CentOS
+      shell: firewall-cmd --zone=public --add-port=31128/tcp --permanent&&firewall-cmd --reload&&firewall-cmd --runtime-to-permanent
+      when: ansible_distribution == 'CentOS'
+      ignore_errors: yes
+
+    - name: install iptables-services
+      yum:
+        name: iptables-services
+      when: ansible_distribution == 'CentOS'
+
+    - name: config firewall with iptables on CentOS
+      shell: iptables -I INPUT -p tcp -m state --state NEW -m tcp --dport 31128 -j ACCEPT&&iptables -I OUTPUT -p tcp -m state --state NEW -m tcp --dport 31128 -j ACCEPT&&service iptables save
+      when: ansible_distribution == 'CentOS'
+      ignore_errors: yes

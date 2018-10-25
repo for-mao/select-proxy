@@ -1,0 +1,40 @@
+version: '3'
+services:
+{% for vps in vps_purchased %}
+    shadowsocks-{{ vps.SUBID }}:
+    build:
+    context: ./
+    dockerfile: Dockerfile_ss
+    command: sslocal -c /etc/shadowsocks.json
+    container_name: dc-shadowsocks-{{ vps.SUBID }}
+    expose:
+    - 1080
+    image: shadowsocks:alpine
+    ports:
+    - {{ ss_port_base + loop.index }}:1080
+    restart: always
+    tty: true
+    volumes:
+    - ./sslocal_{{ vps.SUBID }}.json:/etc/shadowsocks.json
+    privoxy-{{ vps.SUBID }}:
+    build:
+    context: ./
+    dockerfile: Dockerfile_privoxy
+    command: privoxy --no-daemon /etc/privoxy/config
+    container_name: dc-privoxy-{{ vps.SUBID }}
+    depends_on:
+    - shadowsocks-{{ vps.SUBID }}
+    expose:
+    - 8118
+    image: privoxy:alpine
+    links:
+    - shadowsocks-{{ vps.SUBID }}
+    ports:
+    - {{ privoxy_port_base + loop.index }}:8118
+    depends_on:
+    - shadowsocks-{{ vps.SUBID }}
+    restart: always
+    tty: true
+    volumes:
+    - ./privoxy_{{ vps.SUBID }}:/etc/privoxy/config
+{% endfor %}

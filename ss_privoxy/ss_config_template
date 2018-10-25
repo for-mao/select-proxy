@@ -1,0 +1,10 @@
+{
+  "server": "{{ ipv4 }}",
+  "server_port": 18282,
+  "local_address": "127.0.0.1",
+  "local_port": 8899,
+  "password": "Aa123654",
+  "timeout": 300,
+  "method": "aes-256-cfb",
+  "workers": 1
+}
